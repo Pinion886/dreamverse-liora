@@ -29,3 +29,7 @@ async def upload_tt(file_path: str, caption: str):
 async def stripe_tip(amount: float):
     url = create_tip_checkout(amount)
     return {"checkout_url": url}
+@app.post("/chat/")
+async def chat_with_liora(message: str):
+    reply = f"Liora says: I received your message – '{message}'"
+    return {"reply": reply}
