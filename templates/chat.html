@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat with Liora</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #111; color: #fff; display: flex; flex-direction: column; align-items: center; }
+        #chat-box { width: 90%; max-width: 500px; height: 400px; overflow-y: scroll; background: #222; padding: 10px; border-radius: 10px; margin-top: 20px; }
+        .msg { margin: 5px 0; }
+        .user { color: #0ff; }
+        .liora { color: #f0f; }
+        input { width: 90%; padding: 10px; margin-top: 10px; }
+        button { padding: 10px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Chat with Liora</h1>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("user-input");
+            const message = input.value;
+            input.value = "";
+
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<div class="msg user">You: ${message}</div>`;
+
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+            const data = await response.json();
+            chatBox.innerHTML += `<div class="msg liora">Liora: ${data.response}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
